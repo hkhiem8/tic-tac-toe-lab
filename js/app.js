@@ -11,8 +11,6 @@ const winningCombos = [
 
     [0, 4, 8],
     [6, 4, 2]
-
-
 ]
 //Each array will contain three indices of the board that make a winner if they hold the same player value ('X' or 'O').
 
@@ -35,15 +33,15 @@ const resetBtnEl = document.querySelector('#reset');
 // console.log(squareEls) - Displays every square 1-9
 /*-------------------------------- Functions --------------------------------*/
 function init () {
-    let board = [
+    board = [
         '', '', '', 
         '', '', '', 
         '', '', '',];
     
-    let turn = 'X';
-    let winner = false;
-    let tie = false;
-render()
+    turn = 'X';
+    winner = false;
+    tie = false;
+    render()
 }
 
 init()
@@ -68,11 +66,13 @@ function updateBoard() {
 }
 
 function updateMessage () {
-    if (winner && tie == false) {
-        render(`It's Player ${turn}'s turn`)
-        } if (winner === false && tie === true) {
-            render("It's a tie!");
-        }
+    if (!winner && !tie) {
+        messageEl.textContent = `It's Player ${turn}'s turn`
+    } else if (!winner && tie) {
+        messageEl.textContent = "It's a tie!";
+    } else {
+        messageEl.textContent = `Congrats Player ${turn}!`
+    }
 }
 
 function handleClick(event) {
@@ -82,6 +82,7 @@ function handleClick(event) {
     checkForWinner()
     checkForTie()
     switchPlayerTurn()
+    render()
 }
 
 function placePiece(idx) {
@@ -110,22 +111,13 @@ function checkForWinner() {
     }
     }
 
-// Reference
-// [0, 1, 2],
-// [3, 4, 5],
-// [6, 7, 8],
-
-// [0, 3, 6],
-// [1, 4, 7],
-// [2, 5, 8],
-
-// [0, 4, 8],
-// [6, 4, 2]
-
 function checkForTie() {
     if (winner) {
         return
-    } else if (board.includes('')) {
+    }
+    if (board.includes('')) {
+        tie = false;
+    } else {
         tie = true;
     }
 }
@@ -135,9 +127,9 @@ function checkForTie() {
 function switchPlayerTurn() {
     if (winner) {
         return
-    } else if (winner === false && turn === 'X') {
+    } else if (!winner && turn === 'X') {
         turn = 'O'
-    } else if (winner === false && turn === 'O') {
+    } else if (!winner && turn === 'O') {
         turn = 'X'
     }
 }
